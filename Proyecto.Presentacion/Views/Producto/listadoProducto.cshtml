@@ -63,7 +63,7 @@
                         <td>@Html.DisplayFor(modelItem => item.raz_soc)</td>
                         <td><img style="width:60px; height:70px" src="~/img/@Url.Content(item.foto_prod)"/></td>
                         <td class="text-center">
-                            <a href="@Url.Action("ModificarProducto", "Producto", new { id = item.id_producto })" class="btn btn-warning btn-sm">
+                            <a href="@Url.Action("modificarProducto", "Producto", new { id = item.id_producto })" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>

@@ -54,11 +54,16 @@ namespace Proyecto.Presentacion.Controllers
             {
                 // Manejar el error en caso de que la llamada no sea exitosa
                 TempData["ErrorMessage"] = "Error al obtener productos por proveedor.";
-                return RedirectToAction(nameof(listadoProducto));
+                return RedirectToAction(nameof(listadoProductoPorProveedor));
             }
 
-            return View("listadoProducto", productosPorProveedor);
+            // Asignar el proveedorId a ViewBag para usarlo en la vista
+            ViewBag.proveedorId = proveedorId;
+
+            return View("listadoProductoPorProveedor", productosPorProveedor);
         }
+
+
 
 
 
@@ -139,7 +144,7 @@ namespace Proyecto.Presentacion.Controllers
             {
                 // Manejar el error de búsqueda del producto
                 TempData["ErrorMessage"] = "No se pudo encontrar el producto para modificar.";
-                return RedirectToAction(nameof(listadoProducto));
+                return RedirectToAction(nameof(listadoProductoPorProveedor));
             }
         }
 
@@ -160,7 +165,9 @@ namespace Proyecto.Presentacion.Controllers
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Producto actualizado correctamente..!!!";
-                return RedirectToAction(nameof(listadoProducto));
+                // Obtener el proveedorId del producto modificado
+                var proveedorId = objP.id_proveedor;
+                return RedirectToAction(nameof(listadoProductoPorProveedor), new { proveedorId });
             }
             else
             {
@@ -170,12 +177,6 @@ namespace Proyecto.Presentacion.Controllers
             ViewBag.categoria = new SelectList(aCategoria(), "id_categoria", "nom_cat", objP.id_categoria);
             ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc", objP.id_proveedor);
             return View(objP);
-        }
-
-
-        public IActionResult Index()
-        {
-            return View();
         }
     }
 }

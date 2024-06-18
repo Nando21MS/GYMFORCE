@@ -27,5 +27,7 @@ namespace Proyecto.Presentacion.Models
 
         [DisplayName("FOTO PRODUCTO")]
         public string? foto_prod { get; set; }
+
+        public int id_proveedor { get; set; }
     }
 }

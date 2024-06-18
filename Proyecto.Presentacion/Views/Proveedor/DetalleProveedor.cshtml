@@ -8,24 +8,24 @@
 <style>
     .detalle-container {
         display: flex;
-        flex-direction: column; /* Apila los elementos verticalmente */
-        align-items: center; /* Centra horizontalmente */
+        flex-direction: column;
+        align-items: center;
         gap: 2rem;
-        max-width: 800px; /* Ancho máximo para controlar el ancho del contenido */
-        margin: 0 auto; /* Centra el contenido horizontalmente */
+        max-width: 800px;
+        margin: 0 auto;
         padding: 2rem;
         border: 1px solid #ddd;
         border-radius: 0.5rem;
-        background-color: #f8f9fa; /* Color de fondo para el detalle */
+        background-color: #f8f9fa;
     }
 
     .detalle-image {
-        width: 100%; /* Ancho máximo para la imagen */
-        max-width: 300px; /* Ancho máximo para la imagen */
-        height: auto; /* Altura automática para mantener la proporción */
+        width: 100%;
+        max-width: 300px;
+        height: auto;
         border-radius: 0.5rem;
-        overflow: hidden; /* Evita que la imagen se desborde */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave para la imagen */
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
         .detalle-image img {
@@ -35,28 +35,33 @@
         }
 
     .detalle-info {
-        text-align: left; /* Alinea el texto a la izquierda */
-        width: 100%; /* Ocupa todo el ancho disponible */
+        text-align: left;
+        width: 100%;
     }
 
         .detalle-info h2 {
-            margin-top: 0; /* Elimina el margen superior del título */
+            margin-top: 0;
         }
 
         .detalle-info p {
-            margin: 0.5rem 0; /* Ajusta el espaciado de los párrafos */
+            margin: 0.5rem 0;
         }
 
     .volver-link {
         display: block;
         margin-top: 1rem;
         text-align: center;
-        color: #007bff; /* Color del enlace */
+        color: #007bff;
     }
 
         .volver-link:hover {
-            text-decoration: underline; /* Subrayado al pasar el mouse */
+            text-decoration: underline;
         }
+
+    .buscar-productos-btn {
+        margin-top: 1.5rem; /* Espacio adicional sobre el botón */
+        text-align: center;
+    }
 </style>
 
 <h1 class="text-center">Detalle del Proveedor</h1>
@@ -72,9 +77,11 @@
         <p><strong>Correo:</strong> @Model.correo</p>
         <p><strong>Dirección:</strong> @Model.direccion</p>
     </div>
+    <div class="buscar-productos-btn">
+        <a href="@Url.Action("listadoProductoPorProveedor", "Producto", new { proveedorId = Model.id_proveedor })" class="btn btn-primary">
+            <i class="fas fa-search"></i> Buscar Productos
+        </a>
+    </div>
 </div>
-<a href="@Url.Action("listadoProductoPorProveedor", "Producto", new { proveedorId = Model.id_proveedor })" class="btn btn-primary">
-    <i class="fas fa-search"></i> Buscar Productos
-</a>
 
 <a href="@Url.Action("listadoProveedor", "Proveedor")" class="volver-link">Volver al listado de proveedores</a>
