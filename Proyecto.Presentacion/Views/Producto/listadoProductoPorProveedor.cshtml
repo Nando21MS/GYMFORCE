@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Proyecto.Presentacion.Models.Producto>
+
+@{
+    ViewData["Title"] = "Listado de Productos por Proveedor";
+    Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
+}
+
+<style>
+    .custom-title {
+        background: linear-gradient(to right, #6c757d, #343a40);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+</style>
+<h1 class="text-center text-light mb-4 custom-title">Listado de Productos por Proveedor</h1>
+<div class="card mb-4">
+    <div class="card-body">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Proveedor</th>
+                    <th>Imagen</th>
+                    <th>Modificar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.id_producto</td>
+                        <td>@item.nom_prod</td>
+                        <td>@item.des_prod</td>
+                        <td>@item.nom_cat</td>
+                        <td>@item.pre_prod</td>
+                        <td>@item.stock</td>
+                        <td>@item.raz_soc</td>
+                        <td><img style="width:60px; height:70px;" src="~/img/@Url.Content(item.foto_prod)" /></td>
+                        <td class="text-center">
+                            <a href="@Url.Action("ModificarProducto", "Producto", new { id = item.id_producto })" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

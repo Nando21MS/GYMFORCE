@@ -1,0 +1,80 @@
+﻿@model Proyecto.Presentacion.Models.Proveedor
+
+@{
+    ViewData["Title"] = "DetalleProveedor";
+    Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
+}
+
+<style>
+    .detalle-container {
+        display: flex;
+        flex-direction: column; /* Apila los elementos verticalmente */
+        align-items: center; /* Centra horizontalmente */
+        gap: 2rem;
+        max-width: 800px; /* Ancho máximo para controlar el ancho del contenido */
+        margin: 0 auto; /* Centra el contenido horizontalmente */
+        padding: 2rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        background-color: #f8f9fa; /* Color de fondo para el detalle */
+    }
+
+    .detalle-image {
+        width: 100%; /* Ancho máximo para la imagen */
+        max-width: 300px; /* Ancho máximo para la imagen */
+        height: auto; /* Altura automática para mantener la proporción */
+        border-radius: 0.5rem;
+        overflow: hidden; /* Evita que la imagen se desborde */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave para la imagen */
+    }
+
+        .detalle-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+    .detalle-info {
+        text-align: left; /* Alinea el texto a la izquierda */
+        width: 100%; /* Ocupa todo el ancho disponible */
+    }
+
+        .detalle-info h2 {
+            margin-top: 0; /* Elimina el margen superior del título */
+        }
+
+        .detalle-info p {
+            margin: 0.5rem 0; /* Ajusta el espaciado de los párrafos */
+        }
+
+    .volver-link {
+        display: block;
+        margin-top: 1rem;
+        text-align: center;
+        color: #007bff; /* Color del enlace */
+    }
+
+        .volver-link:hover {
+            text-decoration: underline; /* Subrayado al pasar el mouse */
+        }
+</style>
+
+<h1 class="text-center">Detalle del Proveedor</h1>
+
+<div class="detalle-container">
+    <div class="detalle-image">
+        <img src="~/img/@Url.Content(Model.foto_prov)" alt="Foto del proveedor" />
+    </div>
+    <div class="detalle-info">
+        <h2>@Model.raz_soc</h2>
+        <p><strong>RUC:</strong> @Model.ruc</p>
+        <p><strong>Teléfono:</strong> @Model.telefono</p>
+        <p><strong>Correo:</strong> @Model.correo</p>
+        <p><strong>Dirección:</strong> @Model.direccion</p>
+    </div>
+</div>
+<a href="@Url.Action("listadoProductoPorProveedor", "Producto", new { proveedorId = Model.id_proveedor })" class="btn btn-primary">
+    <i class="fas fa-search"></i> Buscar Productos
+</a>
+
+<a href="@Url.Action("listadoProveedor", "Proveedor")" class="volver-link">Volver al listado de proveedores</a>

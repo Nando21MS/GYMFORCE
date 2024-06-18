@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Proyecto.Presentacion.Models.Proveedor>
+
+@{
+    ViewData["Title"] = "listadoProveedor";
+    Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
+}
+
+<style>
+    .custom-title {
+        background: linear-gradient(to right, #6c757d, #343a40); /* Degradado de fondo */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Sombra del texto */
+        padding: 1rem; /* Espaciado interno */
+        border-radius: 0.5rem; /* Esquinas redondeadas */
+    }
+
+    .provider-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .provider-card {
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        width: 250px;
+    }
+
+        .provider-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+    .provider-name {
+        margin-top: 0.5rem;
+        font-weight: bold;
+    }
+</style>
+
+<h1 class="text-center text-light mb-4 custom-title">Listado de Proveedor</h1>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <a href="@Url.Action("nuevoProveedor", "Proveedor")" class="btn btn-primary float-right">
+            <i class="fas fa-plus"></i> Agregar Proveedor
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="provider-container">
+            @foreach (var item in Model)
+            {
+                <div class="provider-card">
+                    <a href="@Url.Action("DetalleProveedor", "Proveedor", new { id = item.id_proveedor })">
+                        <img src="~/img/@Url.Content(item.foto_prov)" alt="Foto de @item.raz_soc" />
+                    </a>
+                    <div class="provider-name">@Html.DisplayFor(modelItem => item.raz_soc)</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
