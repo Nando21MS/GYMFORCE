@@ -245,11 +245,12 @@ namespace Proyecto.Presentacion.Controllers
             worksheet.Cell(1, 5).Value = "Precio";
             worksheet.Cell(1, 6).Value = "Stock";
             worksheet.Cell(1, 7).Value = "Proveedor";
+            worksheet.Cell(1, 8).Value = "Foto";
             worksheet.Cells().Style.Border.OutsideBorder = XLBorderStyleValues.Thin; // Borde delgado en el exterior de la celda
             worksheet.Cells().Style.Border.InsideBorder = XLBorderStyleValues.Thin; // Borde delgado dentro de la celda
 
             // Estilo para todos los encabezados
-            var headerStyle = worksheet.Range("A1:G1").Style;
+            var headerStyle = worksheet.Range("A1:H1").Style;
             headerStyle.Font.Bold = true; // Texto en negrita
             headerStyle.Alignment.Horizontal = XLAlignmentHorizontalValues.Center; // Alineación horizontal centrada
             headerStyle.Fill.BackgroundColor = XLColor.LightSkyBlue; // Color de fondo celeste claro
@@ -268,12 +269,14 @@ namespace Proyecto.Presentacion.Controllers
                 row.Cell(5).Value = productosFiltrados[i].pre_prod;
                 row.Cell(6).Value = productosFiltrados[i].stock;
                 row.Cell(7).Value = productosFiltrados[i].raz_soc;
+                row.Cell(8).Value = productosFiltrados[i].foto_prod;
+
                 // Agregar bordes a la celda
                 row.Cells().Style.Border.OutsideBorder = XLBorderStyleValues.Thin; // Borde delgado en el exterior de la celda
                 row.Cells().Style.Border.InsideBorder = XLBorderStyleValues.Thin; // Borde delgado dentro de la celda
 
                 // Ajustar el ancho de las celdas al contenido
-                for (int j = 1; j <= 7; j++)
+                for (int j = 1; j <= 8; j++)
                 {
                     row.Cell(j).Style.Alignment.WrapText = true; // Ajuste automático de texto
                     if (j != 2 && j != 3) // No centrar "Nombre" y "Descripción"
