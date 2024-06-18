@@ -29,6 +29,7 @@ namespace Proyecto.Presentacion.Controllers
             HttpResponseMessage response =
                 _httpClient.GetAsync(_httpClient.BaseAddress + "/Producto/listadoProducto").Result;
             if (response.IsSuccessStatusCode)
+                
             {
                 var data = response.Content.ReadAsStringAsync().Result;
                 aProductos = JsonConvert.DeserializeObject<List<Producto>>(data);
