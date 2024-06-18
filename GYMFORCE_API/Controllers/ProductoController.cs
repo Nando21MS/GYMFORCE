@@ -63,5 +63,19 @@ namespace GYMFORCE_API.Controllers
             return Ok(lista);
         }
 
+
+        //PARA REPORTE
+        [HttpGet("reporteProducto")]
+        public async Task<ActionResult<List<Producto>>> reporteProducto(
+        [FromQuery] string nombre = null,
+        [FromQuery] int? categoria = null,
+        [FromQuery] int? stock = null,
+        [FromQuery] int? proveedor = null)
+        {
+            var lista = await Task.Run(() => new ProductoDAO().reporteProducto(nombre, categoria, stock, proveedor));
+            return Ok(lista);
+        }
+        //FIN DE REPORTE
+
     }
 }
