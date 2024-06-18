@@ -159,7 +159,7 @@ namespace GYMFORCE_API.Repositorio.DAO
             return mensaje;
         }
 
-        //PARA REPORTE
+        // Método para obtener el reporte de productos
         public IEnumerable<Producto> reporteProducto(string nombre = null, int? categoria = null, int? stock = null, int? proveedor = null)
         {
             List<Producto> aProducto = new List<Producto>();
@@ -189,6 +189,7 @@ namespace GYMFORCE_API.Repositorio.DAO
                                 pre_prod = Convert.ToDouble(dr.GetDecimal(dr.GetOrdinal("PRE_PROD"))),
                                 stock = dr.GetInt32(dr.GetOrdinal("STOCK")),
                                 raz_soc = dr.GetString(dr.GetOrdinal("RAZ_SOC")),
+                                foto_prod = dr.GetString(dr.GetOrdinal("FOTO_PROD"))
                             });
                         }
                     }
@@ -196,7 +197,5 @@ namespace GYMFORCE_API.Repositorio.DAO
             }
             return aProducto;
         }
-
-        //FIN DE REPORTE
     }
 }
