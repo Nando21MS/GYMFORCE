@@ -98,14 +98,20 @@ namespace Proyecto.Presentacion.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> nuevoProducto(ProductoO objP)
+        public async Task<IActionResult> nuevoProducto(ProductoO objP, IFormFile foto_prod)
         {
-            if (!ModelState.IsValid)
+            if (foto_prod != null && foto_prod.Length > 0)
             {
+                using (var ms = new MemoryStream())
+                {
+                    foto_prod.CopyTo(ms);
+                    var imageBytes = ms.ToArray();
+                    objP.foto_prod = Convert.ToBase64String(imageBytes);
+                }
+            }
                 ViewBag.categoria = new SelectList(aCategoria(), "id_categoria", "nom_cat");
                 ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc");
-                return View(objP);
-            }
+            
 
             var json = JsonConvert.SerializeObject(objP);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -125,7 +131,6 @@ namespace Proyecto.Presentacion.Controllers
             ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc");
             return View(objP);
         }
-
 
 
         [HttpGet]

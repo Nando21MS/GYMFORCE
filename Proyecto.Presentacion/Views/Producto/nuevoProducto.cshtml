@@ -1,0 +1,151 @@
+﻿@model Proyecto.Presentacion.Models.ProductoO
+
+@{
+    ViewData["Title"] = "nuevoProducto";
+    Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .custom-title {
+        background: linear-gradient(to right, #6c757d, #343a40); /* Degradado de fondo */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Sombra del texto */
+        padding: 1rem; /* Espaciado interno */
+        border-radius: 0.5rem; /* Esquinas redondeadas */
+    }
+
+    h1 {
+        color: #007bff;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+    }
+
+    .form-group label {
+        color: #343a40;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .custom-file-label::after {
+        content: "Seleccionar";
+    }
+
+    .custom-file-label {
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        height: calc(2.25rem + 2px);
+        padding: .375rem .75rem;
+        line-height: 1.5;
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .custom-file-input {
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: calc(2.25rem + 2px);
+        margin: 0;
+        opacity: 0;
+    }
+
+        .custom-file-input:focus ~ .custom-file-label {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+</style>
+
+<h1 class="text-center text-light mb-4 custom-title">Nuevo Producto</h1>
+
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="nuevoProducto" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="nom_prod" class="control-label">Nombre del Producto:</label>
+                <input asp-for="nom_prod" class="form-control" />
+                <span asp-validation-for="nom_prod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="des_prod" class="control-label">Descripción del Producto:</label>
+                <input asp-for="des_prod" class="form-control" />
+                <span asp-validation-for="des_prod" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="id_categoria" class="control-label">Categoría:</label>
+                <div class="input-group">
+                    @Html.DropDownListFor(model => model.id_categoria, (SelectList)ViewBag.categoria, "(Seleccione una Categoría)", new { @class = "form-control border-primary", required = "required" })
+                </div>
+                <span asp-validation-for="id_categoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pre_prod" class="control-label">Precio del Producto:</label>
+                <input asp-for="pre_prod" class="form-control" />
+                <span asp-validation-for="pre_prod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="stock" class="control-label">Stock:</label>
+                <input asp-for="stock" class="form-control" />
+                <span asp-validation-for="stock" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="id_proveedor" class="control-label">Proveedor:</label>
+                <div class="input-group">
+                    @Html.DropDownListFor(model => model.id_proveedor, (SelectList)ViewBag.proveedor, "(Seleccione un Proveedor)", new { @class = "form-control border-primary", required = "required" })
+                </div>
+                <span asp-validation-for="id_proveedor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="foto_prod">Seleccionar imagen:</label>
+                <input type="file" name="foto_prod" id="foto_prod" accept="image/*" required class="form-control-file">
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-action="listadoProducto" class="btn btn-secondary">Listado de Productos</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
