@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using GYMFORCE_API.Models;
 using GYMFORCE_API.Repositorio.Interfaces;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace GYMFORCE_API.Repositorio.DAO
 {
@@ -101,28 +102,47 @@ namespace GYMFORCE_API.Repositorio.DAO
         {
             string mensaje = "";
             SqlConnection cn = new SqlConnection(cadena);
-            cn.Open();
             try
             {
-                SqlCommand cmd = new SqlCommand("SP_MERGE_PROVEEDOR", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@ide", objP.id_proveedor);
-                cmd.Parameters.AddWithValue("@raz_soc", objP.raz_soc);
-                cmd.Parameters.AddWithValue("@ruc", objP.ruc);
-                cmd.Parameters.AddWithValue("@tel", objP.telefono);
-                cmd.Parameters.AddWithValue("@cor", objP.correo);
-                cmd.Parameters.AddWithValue("@dir", objP.direccion);
-                cmd.Parameters.AddWithValue("@foto_prov", objP.foto_prov);
-                int n = cmd.ExecuteNonQuery();
-                mensaje = n.ToString() + " Proveedor registrado correctamente..!!";
+                cn.Open();
+                using (SqlCommand cmd = new SqlCommand("SP_MERGE_PROVEEDOR", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ide", objP.id_proveedor);
+                    cmd.Parameters.AddWithValue("@raz_soc", objP.raz_soc);
+                    cmd.Parameters.AddWithValue("@ruc", objP.ruc);
+                    cmd.Parameters.AddWithValue("@tel", objP.telefono);
+                    cmd.Parameters.AddWithValue("@cor", objP.correo);
+                    cmd.Parameters.AddWithValue("@dir", objP.direccion);
+                    cmd.Parameters.AddWithValue("@foto_prov", objP.foto_prov);
+
+                    int n = cmd.ExecuteNonQuery();
+                    mensaje = n.ToString() + " Proveedor registrado correctamente..!!";
+
+                    // Guardar la imagen en la carpeta correspondiente si hay datos válidos
+                    if (!string.IsNullOrEmpty(objP.foto_prov) && objP.foto_prov.Length > 0)
+                    {
+                        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Proyecto.Presentacion", "wwwroot", "img", "FOTOPROVEEDOR");
+                        var imagePath = Path.Combine(folderPath, $"{objP.raz_soc}.JPG");
+                        byte[] imageBytes = Convert.FromBase64String(objP.foto_prov);
+                        System.IO.File.WriteAllBytes(imagePath, imageBytes);
+                        objP.foto_prov = $"~/FOTOPROVEEDOR/{objP.raz_soc}.JPG";
+                    }
+                }
             }
             catch (Exception ex)
             {
                 mensaje = "Error al registrar..!!" + ex.Message;
             }
-            cn.Close();
+            finally
+            {
+                cn.Close();
+            }
             return mensaje;
         }
+
+
+
     }
 }
 

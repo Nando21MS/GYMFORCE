@@ -1,4 +1,6 @@
-﻿namespace GYMFORCE_API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GYMFORCE_API.Models
 {
     public class Proveedor
     {
