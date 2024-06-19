@@ -29,6 +29,7 @@ namespace Proyecto.Presentacion.Controllers
                 var data = response.Content.ReadAsStringAsync().Result;
                 aProductos = JsonConvert.DeserializeObject<List<Proveedor>>(data);
             }
+
             return View(aProductos);
         }
 
@@ -59,13 +60,17 @@ namespace Proyecto.Presentacion.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> nuevoProveedor(Proveedor objP)
+        public async Task<IActionResult> nuevoProveedor(Proveedor objP, IFormFile foto_prov)
         {
-            if (!ModelState.IsValid)
+            if (foto_prov != null && foto_prov.Length > 0)
             {
-                return View(objP);
+                using (var ms = new MemoryStream())
+                {
+                    foto_prov.CopyTo(ms);
+                    var imageBytes = ms.ToArray();
+                    objP.foto_prov = Convert.ToBase64String(imageBytes);
+                }
             }
-
             var json = JsonConvert.SerializeObject(objP);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var responseC = await _httpClient.PostAsync("/api/Proveedor/nuevoProveedor", content);

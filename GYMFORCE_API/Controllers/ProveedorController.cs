@@ -20,7 +20,30 @@ namespace GYMFORCE_API.Controllers
         public async Task<ActionResult<string>> nuevoProveedor(Proveedor objP)
         {
             var mensaje = await Task.Run(() =>
-                          new ProveedorDAO().nuevoProveedor(objP));
+            {
+                // Obtener la ruta de la carpeta wwwroot/img/FOTOPROVEEDOR en Proyecto.Presentacion
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Proyecto.Presentacion", "wwwroot", "img", "FOTOPROVEEDOR");
+
+                // Verificar si la carpeta FOTOPROVEEDOR en Proyecto.Presentacion existe, si no, crearla
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Obtener la ruta completa de la imagen a guardar en Proyecto.Presentacion
+                var imagePath = Path.Combine(folderPath, $"{objP.raz_soc}.JPG");
+
+                // Convertir la cadena base64 en bytes y guardar la imagen en Proyecto.Presentacion
+                byte[] imageBytes = Convert.FromBase64String(objP.foto_prov);
+                System.IO.File.WriteAllBytes(imagePath, imageBytes);
+
+                // Actualizar la propiedad foto_prov con la ruta relativa en Proyecto.Presentacion
+                objP.foto_prov = $"~/FOTOPROVEEDOR/{objP.raz_soc}.JPG";
+
+                // Llamar al método nuevoProveedor de ProveedorDAO
+                return new ProveedorDAO().nuevoProveedor(objP);
+            });
+
             return Ok(mensaje);
         }
 
