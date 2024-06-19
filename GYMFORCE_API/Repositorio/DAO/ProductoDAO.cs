@@ -135,28 +135,45 @@ namespace GYMFORCE_API.Repositorio.DAO
         {
             string mensaje = "";
             SqlConnection cn = new SqlConnection(cadena);
-            cn.Open();
+
             try
             {
-                SqlCommand cmd = new SqlCommand("SP_MERGE_PRODUCTO", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@ide", objP.id_producto);
-                cmd.Parameters.AddWithValue("@nom", objP.nom_prod);
-                cmd.Parameters.AddWithValue("@des", objP.des_prod);
-                cmd.Parameters.AddWithValue("@cat", objP.id_categoria);
-                cmd.Parameters.AddWithValue("@pre", objP.pre_prod);
-                cmd.Parameters.AddWithValue("@stock", objP.stock);
-                cmd.Parameters.AddWithValue("@prov", objP.id_proveedor);
-                cmd.Parameters.AddWithValue("@foto_prod", objP.foto_prod);
-                int n = cmd.ExecuteNonQuery();
-                mensaje = n.ToString() + " Producto registrado correctamente..!!";
+                cn.Open();
+                using (SqlCommand cmd = new SqlCommand("SP_MERGE_PRODUCTO", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ide", objP.id_producto);
+                    cmd.Parameters.AddWithValue("@nom", objP.nom_prod);
+                    cmd.Parameters.AddWithValue("@des", objP.des_prod);
+                    cmd.Parameters.AddWithValue("@cat", objP.id_categoria);
+                    cmd.Parameters.AddWithValue("@pre", objP.pre_prod);
+                    cmd.Parameters.AddWithValue("@stock", objP.stock);
+                    cmd.Parameters.AddWithValue("@prov", objP.id_proveedor);
+                    cmd.Parameters.AddWithValue("@foto_prod", objP.foto_prod);
+                    int n = cmd.ExecuteNonQuery();
+                    mensaje = n.ToString() + " Producto registrado correctamente..!!";
+
+                    // Guardar la imagen en la carpeta correspondiente si hay datos válidos
+                    if (!string.IsNullOrEmpty(objP.foto_prod) && objP.foto_prod.Length > 0)
+                    {
+                        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Proyecto.Presentacion", "wwwroot", "img", "FOTOPRODUCTO");
+                        var imagePath = Path.Combine(folderPath, $"{objP.nom_prod}.JPG");
+                        byte[] imageBytes = Convert.FromBase64String(objP.foto_prod);
+                        System.IO.File.WriteAllBytes(imagePath, imageBytes);
+                        objP.foto_prod = $"~/FOTOPRODUCTO/{objP.nom_prod}.JPG";
+                    }
+                }
             }
+
             catch (Exception ex)
             {
                 mensaje = "Error al registrar..!!" + ex.Message;
             }
-            cn.Close();
-            return mensaje;
+            finally
+            {
+                cn.Close();
+            }
+                return mensaje;
         }
 
         // Método para obtener el reporte de productos
