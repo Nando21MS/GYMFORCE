@@ -90,11 +90,13 @@ namespace Proyecto.Presentacion.Controllers
         }
 
         [HttpGet]
-        public IActionResult nuevoProducto()
+        public IActionResult nuevoProducto(int id_proveedor)
         {
+            // Asignar el proveedorId a ViewBag para usarlo en la vista
+            ViewBag.proveedorId = id_proveedor;
             ViewBag.categoria = new SelectList(aCategoria(), "id_categoria", "nom_cat");
-            ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc");
-            return View(new ProductoO());
+            ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc", id_proveedor);
+            return View(new ProductoO() { id_proveedor = id_proveedor });
         }
 
         [HttpPost]
@@ -126,7 +128,6 @@ namespace Proyecto.Presentacion.Controllers
             {
                 TempData["ErrorMessage"] = "Error en el registro del producto.";
             }
-
             ViewBag.categoria = new SelectList(aCategoria(), "id_categoria", "nom_cat");
             ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc");
             return View(objP);

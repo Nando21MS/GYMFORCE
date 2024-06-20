@@ -81,6 +81,9 @@
         <a href="@Url.Action("listadoProductoPorProveedor", "Producto", new { proveedorId = Model.id_proveedor })" class="btn btn-primary">
             <i class="fas fa-search"></i> Buscar Productos
         </a>
+        <a href="@Url.Action("nuevoProducto", "Producto", new { id_proveedor = Model.id_proveedor })" class="btn btn-success">
+            <i class="fas fa-plus"></i> Agregar Producto
+        </a>
     </div>
 </div>
 
