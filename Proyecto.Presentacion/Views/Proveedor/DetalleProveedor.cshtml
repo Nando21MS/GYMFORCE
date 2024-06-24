@@ -71,6 +71,7 @@
         <img src="~/img/@Url.Content(Model.foto_prov)" alt="Foto del proveedor" />
     </div>
     <div class="detalle-info">
+        
         <h2>@Model.raz_soc</h2>
         <p><strong>RUC:</strong> @Model.ruc</p>
         <p><strong>Teléfono:</strong> @Model.telefono</p>
@@ -84,7 +85,11 @@
         <a href="@Url.Action("nuevoProducto", "Producto", new { id_proveedor = Model.id_proveedor })" class="btn btn-success">
             <i class="fas fa-plus"></i> Agregar Producto
         </a>
+        <a href="@Url.ActionLink("actualizaProveedor", "Proveedor", new { id = Model.id_proveedor })" class="btn btn-dark">
+            <i class="fa-solid fa-pen fa-bounce"></i> Actualiza Proveedor
+        </a>
     </div>
 </div>
+
 
 <a href="@Url.Action("listadoProveedor", "Proveedor")" class="volver-link">Volver al listado de proveedores</a>

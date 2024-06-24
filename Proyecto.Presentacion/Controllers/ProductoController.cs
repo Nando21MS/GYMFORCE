@@ -92,6 +92,7 @@ namespace Proyecto.Presentacion.Controllers
         [HttpGet]
         public IActionResult nuevoProducto(int id_proveedor)
         {
+
             // Asignar el proveedorId a ViewBag para usarlo en la vista
             ViewBag.proveedorId = id_proveedor;
             ViewBag.categoria = new SelectList(aCategoria(), "id_categoria", "nom_cat");
@@ -122,7 +123,7 @@ namespace Proyecto.Presentacion.Controllers
             if (responseC.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Producto registrado correctamente..!!!";
-                return RedirectToAction(nameof(nuevoProducto));
+                return RedirectToAction("listadoProductoPorProveedor", new { proveedorId = objP.id_proveedor });
             }
             else
             {
@@ -156,7 +157,7 @@ namespace Proyecto.Presentacion.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> modificarProducto(ProductoO objP)
+        public async Task<IActionResult> modificarProducto(ProductoO objP, int cantidadAgregar)
         {
             if (!ModelState.IsValid)
             {
@@ -164,6 +165,9 @@ namespace Proyecto.Presentacion.Controllers
                 ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc", objP.id_proveedor);
                 return View(objP);
             }
+
+            // Incrementar el stock
+            objP.stock += cantidadAgregar;
 
             var json = JsonConvert.SerializeObject(objP);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -185,6 +189,7 @@ namespace Proyecto.Presentacion.Controllers
             ViewBag.proveedor = new SelectList(aProveedores(), "id_proveedor", "raz_soc", objP.id_proveedor);
             return View(objP);
         }
+
 
         //PARA REPORTE
         [HttpGet]
