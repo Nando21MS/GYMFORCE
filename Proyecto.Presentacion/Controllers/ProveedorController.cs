@@ -78,7 +78,7 @@ namespace Proyecto.Presentacion.Controllers
             if (responseC.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Proveedor registrado correctamente..!!!";
-                return RedirectToAction(nameof(nuevoProveedor));
+                return RedirectToAction(nameof(listadoProveedor));
             }
             else
             {
@@ -90,7 +90,7 @@ namespace Proyecto.Presentacion.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> modificarProveedor(int id)
+        public async Task<IActionResult> actualizaProveedor(int id)
         {
             // Obtener detalles del producto desde la API
             HttpResponseMessage response = await _httpClient.GetAsync($"/api/Proveedor/buscarProveedor/{id}");
@@ -109,8 +109,9 @@ namespace Proyecto.Presentacion.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> modificarProveedor(Proveedor objP)
+        public async Task<IActionResult> actualizaProveedor(Proveedor objP)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(objP);

@@ -49,7 +49,7 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href=@Url.Action("Index","Home")>
-                    <i class="fa-solid fa-house fa-beat"></i>
+                    <i class="fa-solid fa-house fa-lg"></i>
                     <span>Principal</span>
                 </a>
             </li>
@@ -66,7 +66,7 @@
             <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProveedor" aria-expanded="true"
                    aria-controls="collapseTwo">
-                    <i class="fa-solid fa-gift"></i>
+                    <i class="fa-solid fa-truck-field fa-bounce fa-lg"></i>
                     <span>Proveedor</span>
                 </a>
                 <div id="collapseProveedor" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -80,7 +80,7 @@
             <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReporte" aria-expanded="true"
                    aria-controls="collapseTwo">
-                    <i class="fa-solid fa-universal-access"></i>
+                    <i class="fa-solid fa-file-invoice fa-beat fa-lg"></i>
                     <span class="bold-text">Reporte</span>
                 </a>
                 <div id="collapseReporte" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -104,6 +104,42 @@
 
             <!-- Main Content -->
             <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-3 d-none d-lg-inline text-gray-600">Perfil</span>
+                                <i class="fa-solid fa-user fa-bounce fa-lg"></i>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
                 <!-- End of Topbar -->
                 @RenderBody()
             </div>

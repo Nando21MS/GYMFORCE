@@ -33,6 +33,11 @@
         color: #343a40;
     }
 
+    .form-group label {
+        display: block; /* Asegura que el label ocupe todo el ancho disponible */
+        text-align: left; /* Alinea el texto a la izquierda */
+    }
+
     .btn-primary {
         background-color: #007bff;
         border-color: #007bff;
@@ -91,8 +96,8 @@
 <h1 class="text-center text-light mb-4 custom-title">Nuevo Producto</h1>
 
 <hr />
-<div class="row justify-content-center">
-    <div class="col-md-6">
+<div class="row align-items-center" style="padding: 0px 0px 0px 50px">
+    <div class="col-md-6 order-md-1 p-4" style="border: 1px solid #ccc; border-radius: 10px;">
         <form asp-action="nuevoProducto" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -105,47 +110,50 @@
                 <input asp-for="des_prod" class="form-control" />
                 <span asp-validation-for="des_prod" class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="id_categoria" class="control-label">Categoría:</label>
-                <div class="input-group">
-                    @Html.DropDownListFor(model => model.id_categoria, (SelectList)ViewBag.categoria, "(Seleccione una Categoría)", new { @class = "form-control border-primary", required = "required" })
+            <div class="form-group form-inline">
+                <div class="col-md-6">
+                    <label asp-for="id_categoria" class="control-label">Categoría:</label>
+                    <div class="input-group">
+                        @Html.DropDownListFor(model => model.id_categoria, (SelectList)ViewBag.categoria, "(Seleccione una Categoría)", new { @class = "form-control border-primary", required = "required" })
+                    </div>
+                    <span asp-validation-for="id_categoria" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="id_categoria" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="pre_prod" class="control-label">Precio del Producto:</label>
-                <input asp-for="pre_prod" class="form-control" />
-                <span asp-validation-for="pre_prod" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="stock" class="control-label">Stock:</label>
-                <input asp-for="stock" class="form-control" />
-                <span asp-validation-for="stock" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="id_proveedor" class="control-label">Proveedor:</label>
-                <div class="input-group">
-                    @Html.DropDownListFor(model => model.id_proveedor, (SelectList)ViewBag.proveedor, "(Seleccione un Proveedor)", new { @class = "form-control border-primary", required = "required" })
+                <div class="col-md-6">
+                    <label asp-for="id_proveedor" class="control-label">Proveedor:</label>
+                    <div class="input-group">
+                        @Html.DropDownListFor(model => model.id_proveedor, (SelectList)ViewBag.proveedor, "(Seleccione un Proveedor)", new { @class = "form-control border-primary", required = "required", @disabled = "disabled" })
+                    </div>
+                    <span asp-validation-for="id_proveedor" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="id_proveedor" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
+            <div class="form-group form-inline">
+                <div class="col-md-6">
+                    <label asp-for="pre_prod" class="control-label">Precio del Producto:</label>
+                    <input asp-for="pre_prod" class="form-control" />
+                    <span asp-validation-for="pre_prod" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="stock" class="control-label">Stock:</label>
+                    <input asp-for="stock" class="form-control" />
+                    <span asp-validation-for="stock" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group" style="padding: 20px">
                 <label for="foto_prod">Seleccionar imagen:</label>
                 <input type="file" name="foto_prod" id="foto_prod" accept="image/*" required class="form-control-file">
             </div>
-            <div class="form-group text-center">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
-            <div class="form-group text-center">
-                <a href="@Url.Action("DetalleProveedor", "Proveedor", new { id = ViewBag.proveedorId })" class="btn btn-danger btn-block">
+            <div class="form-group text-center d-flex justify-content-center">
+                <input type="submit" value="Crear" class="btn btn-primary mx-2 btn-sm" />
+                <a href="@Url.Action("DetalleProveedor", "Proveedor", new { id = ViewBag.proveedorId })" class="btn btn-danger mx-2 btn-sm">
                     Cancelar
                 </a>
             </div>
         </form>
     </div>
+    <div class="col-md-6 order-md-2 d-flex justify-content-center">
+        <img src="~/img/FONDOS/registroProducto.png" alt="Alternate Text" width="100%" />
+    </div>
 </div>
-
 
 
 @section Scripts {
