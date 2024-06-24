@@ -12,6 +12,13 @@
         padding: 1rem;
         border-radius: 0.5rem;
     }
+
+    .error-message {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        display: block;
+    }
 </style>
 
 <h1 class="text-center text-light mb-4 custom-title">Modificar Producto</h1>
@@ -29,31 +36,31 @@
                     <!-- Nombre del Producto -->
                     <div class="form-group mb-3">
                         <label asp-for="nom_prod" class="control-label text-primary"></label>
-                        <input asp-for="nom_prod" class="form-control border-primary" pattern="[a-zA-ZáéíóúÁÉÍÓÚ\s]+" title="Solo se permiten letras y espacios" required />
-                        <span asp-validation-for="nom_prod" class="text-danger"></span>
+                        <input id="nom_prod" asp-for="nom_prod" class="form-control border-primary" required pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios" />
+                        <span class="error-message" id="nom_prod_error"></span>
                     </div>
 
                     <!-- Descripción -->
                     <div class="form-group mb-3">
                         <label asp-for="des_prod" class="control-label text-primary"></label>
-                        <input asp-for="des_prod" class="form-control border-primary" required />
-                        <span asp-validation-for="des_prod" class="text-danger"></span>
+                        <input id="des_prod" asp-for="des_prod" class="form-control border-primary" required />
+                        <span class="error-message" id="des_prod_error"></span>
                     </div>
 
                     <!-- Categoría -->
                     <div class="form-group mb-3">
                         <label asp-for="id_categoria" class="control-label text-primary"></label>
                         <div class="input-group">
-                            <select asp-for="id_categoria" class="form-control border-primary" asp-items="ViewBag.categoria"></select>
+                            <select id="id_categoria" asp-for="id_categoria" class="form-control border-primary" asp-items="ViewBag.categoria"></select>
                         </div>
-                        <span asp-validation-for="id_categoria" class="text-danger"></span>
+                        <span class="error-message" asp-validation-for="id_categoria"></span>
                     </div>
 
                     <!-- Precio -->
                     <div class="form-group mb-3">
                         <label asp-for="pre_prod" class="control-label text-primary"></label>
-                        <input asp-for="pre_prod" class="form-control border-primary" step="any" required />
-                        <span asp-validation-for="pre_prod" class="text-danger"></span>
+                        <input id="pre_prod" asp-for="pre_prod" class="form-control border-primary" step="any" required />
+                        <span class="error-message" id="pre_prod_error"></span>
                     </div>
 
                     <!-- Stock -->
@@ -61,8 +68,8 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label asp-for="stock" class="control-label text-primary"></label>
-                                <input asp-for="stock" class="form-control border-primary" type="number" step="1" required />
-                                <span asp-validation-for="stock" class="text-danger"></span>
+                                <input id="stock" asp-for="stock" class="form-control border-primary" type="number" step="1" required readonly />
+                                <span class="error-message" asp-validation-for="stock"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -77,16 +84,16 @@
                     <div class="form-group mb-3">
                         <label asp-for="id_proveedor" class="control-label text-primary"></label>
                         <div class="input-group">
-                            <select asp-for="id_proveedor" class="form-control border-primary" asp-items="ViewBag.proveedor"></select>
+                            <select id="id_proveedor" asp-for="id_proveedor" class="form-control border-primary" asp-items="ViewBag.proveedor"></select>
                         </div>
-                        <span asp-validation-for="id_proveedor" class="text-danger"></span>
+                        <span class="error-message" asp-validation-for="id_proveedor"></span>
                     </div>
 
                     <!-- Foto del Producto -->
                     <div class="form-group mb-3">
                         <label asp-for="foto_prod" class="control-label text-primary"></label>
-                        <input asp-for="foto_prod" class="form-control border-primary" readonly />
-                        <span asp-validation-for="foto_prod" class="text-danger"></span>
+                        <input id="foto_prod" asp-for="foto_prod" class="form-control border-primary" readonly />
+                        <span class="error-message" asp-validation-for="foto_prod"></span>
                     </div>
 
                     <div class="form-group">
@@ -104,3 +111,45 @@
         <img src="~/img/FONDOS/registroProducto.png" alt="Alternate Text" width="100%" />
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('productoForm').onsubmit = function (event) {
+            var nom_prod = document.getElementById('nom_prod').value;
+            var des_prod = document.getElementById('des_prod').value;
+            var pre_prod = document.getElementById('pre_prod').value;
+            var stock = document.getElementById('stock').value;
+
+            document.getElementById('nom_prod_error').innerHTML = '';
+            document.getElementById('des_prod_error').innerHTML = '';
+            document.getElementById('pre_prod_error').innerHTML = '';
+            document.getElementById('stock_error').innerHTML = '';
+
+            if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(nom_prod)) {
+                document.getElementById('nom_prod_error').innerHTML = 'Ingrese un Nombre de Producto válido.';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9\s]+$/.test(des_prod)) {
+                document.getElementById('des_prod_error').innerHTML = 'Ingrese una Descripción válida.';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^\d+(?:\.\d{1,2})?$/.test(pre_prod)) {
+                document.getElementById('pre_prod_error').innerHTML = 'Ingrese un Precio válido.';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^\d+$/.test(stock)) {
+                document.getElementById('stock_error').innerHTML = 'Ingrese un Stock válido.';
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        };
+    </script>
+}

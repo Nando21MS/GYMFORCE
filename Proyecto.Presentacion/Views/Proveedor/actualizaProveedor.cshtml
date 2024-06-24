@@ -11,6 +11,12 @@
         padding: 1rem;
         border-radius: 0.5rem;
     }
+
+    .error-message {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
 </style>
 
 <h1 class="text-center text-light mb-4 custom-title">Modificar Proveedor</h1>
@@ -30,36 +36,36 @@
                     <!-- Razón Social -->
                     <div class="form-group mb-3">
                         <label asp-for="raz_soc" class="control-label text-primary"></label>
-                        <input asp-for="raz_soc" class="form-control border-primary" pattern="[a-zA-ZáéíóúÁÉÍÓÚ\s]+" title="Solo se permiten letras y espacios" required />
-                        <span asp-validation-for="raz_soc" class="text-danger"></span>
+                        <input asp-for="raz_soc" class="form-control border-primary" required />
+                        <span class="error-message" id="raz_soc_error"></span>
                     </div>
 
                     <!-- RUC -->
                     <div class="form-group mb-3">
                         <label asp-for="ruc" class="control-label text-primary"></label>
                         <input asp-for="ruc" class="form-control border-primary" required />
-                        <span asp-validation-for="ruc" class="text-danger"></span>
+                        <span class="error-message" id="ruc_error"></span>
                     </div>
 
                     <!-- Teléfono -->
                     <div class="form-group mb-3">
                         <label asp-for="telefono" class="control-label text-primary"></label>
                         <input asp-for="telefono" class="form-control border-primary" required />
-                        <span asp-validation-for="telefono" class="text-danger"></span>
+                        <span class="error-message" id="telefono_error"></span>
                     </div>
 
                     <!-- Correo -->
                     <div class="form-group mb-3">
                         <label asp-for="correo" class="control-label text-primary"></label>
-                        <input asp-for="correo" class="form-control border-primary" required />
-                        <span asp-validation-for="correo" class="text-danger"></span>
+                        <input asp-for="correo" class="form-control border-primary" required type="email"/>
+                        <span class="error-message" id="correo_error"></span>
                     </div>
 
                     <!-- Dirección -->
                     <div class="form-group mb-3">
                         <label asp-for="direccion" class="control-label text-primary"></label>
                         <input asp-for="direccion" class="form-control border-primary" required />
-                        <span asp-validation-for="direccion" class="text-danger"></span>
+                        <span class="error-message" id="direccion_error"></span>
                     </div>
 
                     <!-- Foto del Proveedor -->
@@ -80,3 +86,47 @@
         <img src="~/img/FONDOS/registroProducto.png" alt="Alternate Text" width="100%" />
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('proveedorForm').onsubmit = function (event) {
+            var raz_soc = document.getElementById('raz_soc').value;
+            var ruc = document.getElementById('ruc').value;
+            var telefono = document.getElementById('telefono').value;
+            var correo = document.getElementById('correo').value;
+            var direccion = document.getElementById('direccion').value;
+
+            document.getElementById('raz_soc_error').innerHTML = '';
+            document.getElementById('ruc_error').innerHTML = '';
+            document.getElementById('telefono_error').innerHTML = '';
+            document.getElementById('correo_error').innerHTML = '';
+            document.getElementById('direccion_error').innerHTML = '';
+
+            if (!/^[a-zA-Z\s]+$/.test(raz_soc)) {
+                document.getElementById('raz_soc_error').innerHTML = 'Ingrese una Razón Social válida.';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^\d{11}$/.test(ruc)) {
+                document.getElementById('ruc_error').innerHTML = 'Ingrese un RUC válido (11 números).';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^\d{9}$/.test(telefono)) {
+                document.getElementById('telefono_error').innerHTML = 'Ingrese un Teléfono válido (9 números).';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9\s.]+$/.test(direccion)) {
+                document.getElementById('direccion_error').innerHTML = 'Ingrese una Dirección válida.';
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        };
+    </script>
+}

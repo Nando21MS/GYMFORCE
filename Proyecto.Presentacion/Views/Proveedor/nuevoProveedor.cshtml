@@ -17,54 +17,57 @@
         display: block; /* Asegura que el label ocupe todo el ancho disponible */
         text-align: left; /* Alinea el texto a la izquierda */
     }
+
+    .error-message {
+        color: red; /* Color rojo para mensajes de error */
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
 </style>
 
 <h1 class="text-center text-light mb-4 custom-title">Nuevo Proveedor</h1>
 
-
-
 <div class="row align-items-center" style="padding: 0px 0px 0px 50px">
     <div class="col-md-6 order-md-1 p-4" style="border: 1px solid #ccc; border-radius: 10px;">
-            <form asp-action="nuevoProveedor" method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="raz_soc" class="control-label">Razón Social:</label>
-                    <input asp-for="raz_soc" class="form-control" />
-                    <span asp-validation-for="raz_soc" class="text-danger"></span>
+        <form id="formProveedor" asp-action="nuevoProveedor" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="raz_soc" class="control-label">Razón Social:</label>
+                <input id="raz_soc" name="raz_soc" class="form-control" required />
+                <span class="error-message" id="raz_soc_error"></span>
+            </div>
+            <div class="form-group form-inline">
+                <div class="col-md-6">
+                    <label asp-for="ruc" class="control-label">RUC:</label>
+                    <input id="ruc" name="ruc" class="form-control" required />
+                    <span class="error-message" id="ruc_error"></span>
                 </div>
-                 <div class="form-group form-inline">
-                    <div class="col-md-6">
-                        <label asp-for="ruc" class="control-label">RUC:</label>
-                        <input asp-for="ruc" class="form-control" />
-                        <span asp-validation-for="ruc" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="telefono" class="control-label">Teléfono:</label>
-                        <input asp-for="telefono" class="form-control" />
-                        <span asp-validation-for="telefono" class="text-danger"></span>
-                     </div>
+                <div class="col-md-6">
+                    <label asp-for="telefono" class="control-label">Teléfono:</label>
+                    <input id="telefono" name="telefono" class="form-control" required />
+                    <span class="error-message" id="telefono_error"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="correo" class="control-label">Correo:</label>
-                    <input asp-for="correo" class="form-control" />
-                    <span asp-validation-for="correo" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="direccion" class="control-label">Dirección:</label>
-                    <input asp-for="direccion" class="form-control" />
-                    <span asp-validation-for="direccion" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label for="foto_prov">Seleccionar imagen:</label>
-                    <input type="file" name="foto_prov" id="foto_prov" accept="image/*" required class="form-control-file">
-                </div>
-                <div class="form-group text-center d-flex justify-content-center">
+            </div>
+            <div class="form-group">
+                <label asp-for="correo" class="control-label">Correo:</label>
+                <input id="correo" name="correo" class="form-control" required  type="email"/>
+                <span class="error-message" id="correo_error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="direccion" class="control-label">Dirección:</label>
+                <input id="direccion" name="direccion" class="form-control" required />
+                <span class="error-message" id="direccion_error"></span>
+            </div>
+            <div class="form-group">
+                <label for="foto_prov">Seleccionar imagen:</label>
+                <input type="file" id="foto_prov" name="foto_prov" accept="image/*" required class="form-control-file">
+            </div>
+            <div class="form-group text-center d-flex justify-content-center">
                 <input type="submit" value="Crear" class="btn btn-primary mx-2 btn-sm" />
                 <a href="@Url.Action("listadoProveedor", "Proveedor", new { id = ViewBag.proveedorId })" class="btn btn-danger mx-2 btn-sm">
-                        Cancelar
-                    </a>
-                </div>
-            </form>
+                    Cancelar
+                </a>
+            </div>
+        </form>
     </div>
     <div class="col-md-6 order-md-2 d-flex justify-content-center">
         <img src="~/img/FONDOS/registroProveedor.png" alt="Alternate Text" width="100%" />
@@ -75,8 +78,48 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
+    <script>
+        document.getElementById('formProveedor').onsubmit = function (event) {
+            var raz_soc = document.getElementById('raz_soc').value;
+            var ruc = document.getElementById('ruc').value;
+            var telefono = document.getElementById('telefono').value;
+            var correo = document.getElementById('correo').value;
+            var direccion = document.getElementById('direccion').value;
 
+            document.getElementById('raz_soc_error').innerHTML = '';
+            document.getElementById('ruc_error').innerHTML = '';
+            document.getElementById('telefono_error').innerHTML = '';
+            document.getElementById('correo_error').innerHTML = '';
+            document.getElementById('direccion_error').innerHTML = '';
+
+            if (!/^[a-zA-Z\s]+$/.test(raz_soc)) {
+                document.getElementById('raz_soc_error').innerHTML = 'Ingrese una Razón Social válida.';
+                event.preventDefault(); 
+                return false;
+            }
+
+            if (!/^\d{11}$/.test(ruc)) {
+                document.getElementById('ruc_error').innerHTML = 'Ingrese un RUC válido (11 números).';
+                event.preventDefault(); 
+                return false;
+            }
+
+            if (!/^\d{9}$/.test(telefono)) {
+                document.getElementById('telefono_error').innerHTML = 'Ingrese un Teléfono válido (9 números).';
+                event.preventDefault(); 
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9\s.]+$/.test(direccion)) {
+                document.getElementById('direccion_error').innerHTML = 'Ingrese una Dirección válida.';
+                event.preventDefault();
+                return false;
+            }
+
+            return true; 
+        };
+    </script>
+}
 
 <style>
     body {
