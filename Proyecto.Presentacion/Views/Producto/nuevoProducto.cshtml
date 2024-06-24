@@ -91,6 +91,12 @@
             border-color: #80bdff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
+
+    .error-message {
+        color: red; /* Color rojo para mensajes de error */
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
 </style>
 
 <h1 class="text-center text-light mb-4 custom-title">Nuevo Producto</h1>
@@ -98,17 +104,16 @@
 <hr />
 <div class="row align-items-center" style="padding: 0px 0px 0px 50px">
     <div class="col-md-6 order-md-1 p-4" style="border: 1px solid #ccc; border-radius: 10px;">
-        <form asp-action="nuevoProducto" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form id="formProducto" asp-action="nuevoProducto" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="nom_prod" class="control-label">Nombre del Producto:</label>
-                <input asp-for="nom_prod" class="form-control" />
-                <span asp-validation-for="nom_prod" class="text-danger"></span>
+                <input asp-for="nom_prod" class="form-control" required />
+                <span class="error-message" id="nom_prod_error"></span>
             </div>
             <div class="form-group">
                 <label asp-for="des_prod" class="control-label">Descripción del Producto:</label>
-                <input asp-for="des_prod" class="form-control" />
-                <span asp-validation-for="des_prod" class="text-danger"></span>
+                <input asp-for="des_prod" class="form-control" required />
+                <span class="error-message" id="des_prod_error"></span>
             </div>
             <div class="form-group form-inline">
                 <div class="col-md-6">
@@ -121,7 +126,7 @@
                 <div class="col-md-6">
                     <label asp-for="id_proveedor" class="control-label">Proveedor:</label>
                     <div class="input-group">
-                        @Html.DropDownListFor(model => model.id_proveedor, (SelectList)ViewBag.proveedor, "(Seleccione un Proveedor)", new { @class = "form-control border-primary", required = "required", @disabled = "disabled" })
+                        @Html.DropDownListFor(model => model.id_proveedor, (SelectList)ViewBag.proveedor, "(Seleccione un Proveedor)", new { @class = "form-control border-primary", required = "required" })
                     </div>
                     <span asp-validation-for="id_proveedor" class="text-danger"></span>
                 </div>
@@ -129,13 +134,13 @@
             <div class="form-group form-inline">
                 <div class="col-md-6">
                     <label asp-for="pre_prod" class="control-label">Precio del Producto:</label>
-                    <input asp-for="pre_prod" class="form-control" />
-                    <span asp-validation-for="pre_prod" class="text-danger"></span>
+                    <input asp-for="pre_prod" class="form-control" required />
+                    <span class="error-message" id="pre_prod_error"></span>
                 </div>
                 <div class="col-md-6">
                     <label asp-for="stock" class="control-label">Stock:</label>
-                    <input asp-for="stock" class="form-control" />
-                    <span asp-validation-for="stock" class="text-danger"></span>
+                    <input asp-for="stock" class="form-control" required />
+                    <span class="error-message" id="stock_error"></span>
                 </div>
             </div>
             <div class="form-group" style="padding: 20px">
@@ -160,4 +165,43 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.getElementById('formProducto').onsubmit = function (event) {
+            var nom_prod = document.getElementById('nom_prod').value;
+            var des_prod = document.getElementById('des_prod').value;
+            var pre_prod = document.getElementById('pre_prod').value;
+            var stock = document.getElementById('stock').value;
+
+            document.getElementById('nom_prod_error').innerHTML = '';
+            document.getElementById('des_prod_error').innerHTML = '';
+            document.getElementById('pre_prod_error').innerHTML = '';
+            document.getElementById('stock_error').innerHTML = '';
+
+            if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nom_prod)) {
+                document.getElementById('nom_prod_error').innerHTML = 'Ingrese un Nombre de Producto válido.';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9\s]+$/.test(des_prod)) {
+                document.getElementById('des_prod_error').innerHTML = 'Ingrese una Descripción válida.';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^\d+$/.test(pre_prod)) {
+                document.getElementById('pre_prod_error').innerHTML = 'Ingrese un Precio válido.';
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^\d+$/.test(stock)) {
+                document.getElementById('stock_error').innerHTML = 'Ingrese un Stock válido.';
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        };
+    </script>
 }
